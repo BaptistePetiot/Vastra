@@ -10,7 +10,7 @@
 <!--    <android.support.design.widget.TextInputLayout></android.support.design.widget.TextInputLayout>-->
 
     <EditText
-        android:id="@+id/editTextFirstName"
+        android:id="@+id/editTextSignupFirstName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -20,7 +20,7 @@
         android:minHeight="48dp" />
 
     <EditText
-        android:id="@+id/editTextLastName"
+        android:id="@+id/editTextSignupLastName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -30,7 +30,7 @@
         android:minHeight="48dp" />
 
     <EditText
-        android:id="@+id/editTextEmail"
+        android:id="@+id/editTextSignupEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -40,7 +40,7 @@
         android:minHeight="48dp" />
 
     <EditText
-        android:id="@+id/editTextTextPassword"
+        android:id="@+id/editTextSignupPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -50,7 +50,7 @@
         android:minHeight="48dp"/>
 
     <EditText
-        android:id="@+id/editTextAge"
+        android:id="@+id/editTextSignupAge"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -60,7 +60,7 @@
         android:minHeight="48dp" />
 
     <EditText
-        android:id="@+id/editTextCountry"
+        android:id="@+id/editTextSignupCountry"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -70,7 +70,7 @@
         android:minHeight="48dp" />
 
     <EditText
-        android:id="@+id/editTextHeight"
+        android:id="@+id/editTextSignupHeight"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -80,7 +80,7 @@
         android:minHeight="48dp" />
 
     <EditText
-        android:id="@+id/editTextWeight"
+        android:id="@+id/editTextSignupWeight"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"

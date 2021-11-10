@@ -1,16 +1,12 @@
 package fr.android.bottomnav;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -35,16 +31,16 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
         getActionBar().setIcon(R.drawable.ic_left_arrow);
 
-        firstName = (EditText) findViewById(R.id.editTextFirstName);
+        firstName = (EditText) findViewById(R.id.editTextSignupFirstName);
         firstName.requestFocus();
 
-        lastName = (EditText) findViewById(R.id.editTextLastName);
-        email = (EditText) findViewById(R.id.editTextTextEmailAddress);
-        password = (EditText) findViewById(R.id.editTextTextPassword);
-        age = (EditText) findViewById(R.id.editTextAge);
-        country = (EditText) findViewById(R.id.editTextCountry);
-        height = (EditText) findViewById(R.id.editTextHeight);
-        weight = (EditText) findViewById(R.id.editTextWeight);
+        lastName = (EditText) findViewById(R.id.editTextSignupLastName);
+        email = (EditText) findViewById(R.id.editTextSignupEmail);
+        password = (EditText) findViewById(R.id.editTextSignupPassword);
+        age = (EditText) findViewById(R.id.editTextSignupAge);
+        country = (EditText) findViewById(R.id.editTextSignupCountry);
+        height = (EditText) findViewById(R.id.editTextSignupHeight);
+        weight = (EditText) findViewById(R.id.editTextSignupWeight);
     }
 
     /*public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -67,8 +63,7 @@ public class SignupActivity extends AppCompatActivity {
 
     // register data
     public void register(View view){
-        //Intent intent = new Intent(this, LoginActivity.class);
-        Log.d("TAG", "email : " + email.getText().toString() + " ,password : " + password.getText().toString());
+        Intent intent = new Intent(this, LoginActivity.class);
 
         // register important data in the remote database
         mAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
@@ -79,7 +74,7 @@ public class SignupActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("TAG", "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            //startActivity(intent);
+                            startActivity(intent);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("TAG", "createUserWithEmail:failure", task.getException());
@@ -91,8 +86,8 @@ public class SignupActivity extends AppCompatActivity {
                 });
 
         // register personal data in the sqlite local database
-        //DBHandler dbHandler = new DBHandler(this);
-        //dbHandler.addNewUser(firstName.getText().toString(), lastName.getText().toString(), email.getText().toString(), Integer.parseInt(age.getText().toString()), country.getText().toString(), Double.parseDouble(height.getText().toString()), Double.parseDouble(weight.getText().toString()));
+        DBHandler dbHandler = new DBHandler(this);
+        dbHandler.addNewUser(firstName.getText().toString(), lastName.getText().toString(), email.getText().toString(), Integer.parseInt(age.getText().toString()), country.getText().toString(), Double.parseDouble(height.getText().toString()), Double.parseDouble(weight.getText().toString()));
 
     }
 
