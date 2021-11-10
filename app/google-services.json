@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "73702321324",
+    "project_id": "vastra-88b2f",
+    "storage_bucket": "vastra-88b2f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:73702321324:android:c1e10c0a8e64123d9c4309",
+        "android_client_info": {
+          "package_name": "fr.android.bottomnav"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "73702321324-qs4oknlq6mlqqvhdn9csdntgkelh316i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-6iCAeQJt4NgUchPCuDqaQkv7sNC2ERw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "73702321324-qs4oknlq6mlqqvhdn9csdntgkelh316i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

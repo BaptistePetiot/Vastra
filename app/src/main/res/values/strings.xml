@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Vastra</string>
+    <string name="title_accueil">Accueil</string>
+    <string name="title_enregistrer">Enregistrer</string>
+    <string name="title_entrainements">Entrainements</string>
+    <string name="title_localiser">Localiser</string>
+    <string name="title_profile">Profil</string>
+    <string name="pres">L\'application n°1 pour les coureurs et les cyclistes</string>
+    <string name="facebook">Continuer avec Facebook</string>
+    <string name="google">Continuer avec Google</string>
+    <string name="email">S\'inscrire avec une adresse email</string>
+    <string name="text_email">Email</string>
+    <string name="member">Déjà membre ?</string>
+    <string name="signup_title">S\'inscrire</string>
+    <string name="connect">Se connecter</string>
+    <string name="pass_length">Les mots de passe doivent contenir au moins 6 caractères</string>
+    <string name="agreement_terms_of_use">En vous inscrivant, vous acceptez nos Conditions d\'utilisation.</string>
+    <string name="agreement_confidentiality_policy">Consultez notre Politique de confidentialité.</string>
+    <string name="signup_email">E-mail</string>
+    <string name="signup_pass">Mot de passe</string>
+    <string name="signup">Accepter et s\'inscrire</string>
+    <string name="firstName">Prénom</string>
+    <string name="lastName">Nom</string>
+    <string name="country">Pays</string>
+    <string name="age">Age</string>
+    <string name="height">Taille</string>
+    <string name="weight">Poids</string>
+    <string name="runnerCode">Code du coureur</string>
+    <string name="editUser">Editer utilisateur</string>
+</resources>

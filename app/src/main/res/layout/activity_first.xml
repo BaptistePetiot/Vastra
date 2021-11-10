@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    tools:context=".FirstActivity">
+
+    <!--<ImageSwitcher
+        android:id="@+id/image_switcher"
+        android:layout_width="match_parent"
+        android:layout_height="410dp"
+        android:scaleType="centerCrop" />-->
+
+    <ImageView
+        android:id="@+id/image_sport"
+        android:layout_width="match_parent"
+        android:layout_height="410dp"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/coureur" />
+
+    <ImageView
+        android:id="@+id/image_vastra"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        app:srcCompat="@drawable/ic_vastra_black"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_horizontal"
+            android:text="@string/pres"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/button_signin_fb"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:height="60dp"
+            android:backgroundTint="#00FFFFFF"
+            android:onClick="login"
+            android:text="@string/facebook"
+            android:textAllCaps="false"
+            app:icon="@drawable/ic_facebook"
+            app:iconSize="20dp"
+            app:strokeColor="@color/light_gray"
+            app:strokeWidth="1.5dp" />
+
+        <Button
+            android:id="@+id/button_signin_google"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:height="60dp"
+            android:backgroundTint="#00FFFFFF"
+            android:onClick="login"
+            android:text="@string/google"
+            android:textAllCaps="false"
+            app:icon="@drawable/ic_google"
+            app:iconSize="20dp"
+            app:strokeColor="@color/light_gray"
+            app:strokeWidth="1.5dp" />
+
+        <Button
+            android:id="@+id/button_signin_email"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:height="60dp"
+            android:backgroundTint="#00FFFFFF"
+            android:onClick="signupEmail"
+            android:text="@string/email"
+            android:textAllCaps="false"
+            app:icon="@drawable/ic_email"
+            app:iconPadding="8dp"
+            app:iconSize="20dp"
+            app:strokeColor="@color/light_gray"
+            app:strokeWidth="1.5dp" />
+
+
+        <TextView
+            android:id="@+id/text_already_member"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="7dp"
+            android:gravity="center_horizontal"
+            android:text="@string/member"
+            android:textAllCaps="true"/>
+
+
+        <Button
+            android:id="@+id/button_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="5dp"
+            android:height="60dp"
+            android:backgroundTint="@color/vastra_dark_blue"
+            android:onClick="login"
+            android:text="@string/connect"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+
+</RelativeLayout>

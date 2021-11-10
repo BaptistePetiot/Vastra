@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_accueil"
+        android:icon="@drawable/ic_home"
+        android:title="@string/title_accueil" />
+
+    <item
+        android:id="@+id/navigation_enregistrer"
+        android:icon="@drawable/ic_record"
+        android:title="@string/title_enregistrer" />
+
+    <item
+        android:id="@+id/navigation_entrainements"
+        android:icon="@drawable/ic_running"
+        android:title="@string/title_entrainements" />
+
+    <item
+        android:id="@+id/navigation_localiser"
+        android:icon="@drawable/ic_localisation"
+        android:title="@string/title_localiser" />
+
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/ic_user"
+        android:title="@string/title_profile" />
+
+</menu>
