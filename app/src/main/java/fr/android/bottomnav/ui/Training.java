@@ -47,6 +47,10 @@ public class Training {
         return distance;
     }
 
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
+
     public String getDuration() {
         return duration;
     }

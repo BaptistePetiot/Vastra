@@ -175,7 +175,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                 Duration duration = Duration.between(beginningHour, finishingHour);
                 training.setDuration(duration.toString().replace("PT", ""));
 
-                /*// compute the total distance
+                // compute the total distance
+                float totalDistance = 0;
                 for(int i = 1; i < training.getPath().size(); i++){
                     String sm1 = training.getPath().get(i-1);
                     Double latm1 = Double.parseDouble(sm1.split("/")[0]);
@@ -185,13 +186,16 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                     Double lat = Double.parseDouble(s.split("/")[0]);
                     Double lng = Double.parseDouble(s.split("/")[1]);
 
-                    Location.distanceBetween()
-                }*/
+                    float[] results = new float[1];
+                    Location.distanceBetween(latm1, lngm1, lat, lng, results);
+                    totalDistance += results[0];
+                }
+                training.setDistance(String.valueOf(totalDistance));
 
                 // save the training to firebase
                 Map<String, Object> docData = new HashMap<>();
                 docData.put("dateAndHour", training.getDateAndHour());
-                docData.put("distance", "15km");
+                docData.put("distance", training.getDistance());
                 docData.put("duration", training.getDuration());
                 docData.put("address_start", training.getAddress_start());
                 docData.put("address_end", training.getAddress_end());
@@ -236,10 +240,13 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                 gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coord, 15));
 
                 // add new location to path
-                String newCoord = lat + "/" + lng;
-                ArrayList<String> path = training.getPath();
-                path.add(newCoord);
-                training.setPath(path);
+                if(training.isStarted() && !training.isFinished()){
+                    String newCoord = lat + "/" + lng;
+                    ArrayList<String> path = training.getPath();
+                    path.add(newCoord);
+                    training.setPath(path);
+                }
+
 
             }
         };
