@@ -82,7 +82,7 @@ public class EntrainementsAdapter extends RecyclerView.Adapter<EntrainementsAdap
         // contents of the view with that element
 
         Training training = localDataSet.get(position);
-        date = training.getDate();
+        date = training.getDateAndHour();
         distance = training.getDistance();
         duration = training.getDuration();
 

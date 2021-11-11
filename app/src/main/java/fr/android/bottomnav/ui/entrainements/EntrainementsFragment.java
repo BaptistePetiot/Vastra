@@ -79,15 +79,13 @@ public class EntrainementsFragment extends Fragment {
                                     // list des trainings récupérés
                                     // ajouter tous les trainings à la liste trainings
                                     ArrayList<String> p = (ArrayList<String>) document.getData().get("path");
-                                    ArrayList<String> r = (ArrayList<String>) document.getData().get("rythm");
 
-                                    trainings.add(new Training(String.valueOf(document.getData().get("date")),
+                                    trainings.add(new Training(String.valueOf(document.getData().get("dateAndHour")),
                                             String.valueOf(document.getData().get("distance")),
                                             String.valueOf(document.getData().get("duration")),
                                             String.valueOf(document.getData().get("address_start")),
                                             String.valueOf(document.getData().get("address_end")),
-                                            p,
-                                            r
+                                            p
                                             ));
                                 }
                             }

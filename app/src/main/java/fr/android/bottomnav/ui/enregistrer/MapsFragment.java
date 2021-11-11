@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -40,8 +41,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -49,6 +54,7 @@ import java.util.Map;
 
 import fr.android.bottomnav.R;
 import fr.android.bottomnav.User;
+import fr.android.bottomnav.ui.Training;
 
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
@@ -61,7 +67,11 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private final int GPS_REQUEST_CODE = 1;
     private GoogleMap gMap;
     private ImageButton imgBtn;
+    private Button button_start, button_stop;
     private FirebaseFirestore db;
+
+    private Training training;
+    private Geocoder geocoder;
 
     int PERM_REQUEST = 1;
     private final int CAMERA_PERM_CODE = 101;
@@ -86,6 +96,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         // Firebase
         db = FirebaseFirestore.getInstance();
 
+        // Gecoder
+        geocoder = new Geocoder(getActivity(), Locale.getDefault());
+
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }
 
@@ -101,12 +114,98 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             mapFragment.getMapAsync(this);
         }
 
+        // create new training
+        training = new Training();
+
         // PHOTO
         imgBtn = (ImageButton) view.findViewById(R.id.imageButtonPhoto);
         imgBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 takePhoto();
+            }
+        });
+
+        // START
+        button_start = (Button) view.findViewById(R.id.button_start);
+        button_start.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                // set the training to started
+                training.setStarted(true);
+
+                // determine the date and beginning hour
+                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                Date date = new Date();
+                training.setDateAndHour(formatter.format(date));
+            }
+        });
+
+        // STOP
+        button_stop = (Button) view.findViewById(R.id.button_stop);
+        button_stop.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                // set the training to finished
+                training.setFinished(true);
+
+                // determine the strating and finishing addresses
+                ArrayList<String> path = training.getPath();
+                String startCoord = path.get(0);
+                String endCoord = path.get(path.size() - 1);
+                Double start_lat = Double.parseDouble(startCoord.split("/")[0]);
+                Double start_lng = Double.parseDouble(startCoord.split("/")[1]);
+                Double end_lat = Double.parseDouble(endCoord.split("/")[0]);
+                Double end_lng = Double.parseDouble(endCoord.split("/")[1]);
+
+                try {
+                    String startAddress = geocoder.getFromLocation(start_lat, start_lng, 1).get(0).getAddressLine(0); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                    String endAddress = geocoder.getFromLocation(end_lat, end_lng, 1).get(0).getAddressLine(0); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                    training.setAddress_start(startAddress);
+                    training.setAddress_end(endAddress);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                // compute the total duration
+                LocalTime beginningHour = LocalTime.parse(training.getDateAndHour().split(" ")[1]);
+                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+                Date date = new Date();
+                LocalTime finishingHour = LocalTime.parse(formatter.format(date));
+                Duration duration = Duration.between(beginningHour, finishingHour);
+                training.setDuration(duration.toString().replace("PT", ""));
+
+                /*// compute the total distance
+                for(int i = 1; i < training.getPath().size(); i++){
+                    String sm1 = training.getPath().get(i-1);
+                    Double latm1 = Double.parseDouble(sm1.split("/")[0]);
+                    Double lngm1 = Double.parseDouble(sm1.split("/")[1]);
+
+                    String s = training.getPath().get(i);
+                    Double lat = Double.parseDouble(s.split("/")[0]);
+                    Double lng = Double.parseDouble(s.split("/")[1]);
+
+                    Location.distanceBetween()
+                }*/
+
+                // save the training to firebase
+                Map<String, Object> docData = new HashMap<>();
+                docData.put("dateAndHour", training.getDateAndHour());
+                docData.put("distance", "15km");
+                docData.put("duration", training.getDuration());
+                docData.put("address_start", training.getAddress_start());
+                docData.put("address_end", training.getAddress_end());
+                docData.put("path", training.getPath());
+
+                // generate the document id based on the user id and the timestamp at start
+                Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+                String ts = User.uid + "_" + String.valueOf(timestamp.getTime());
+
+                // Add a new document (asynchronously) in collection "cities"
+                db.collection("trainings")
+                        .document(ts)
+                        .set(docData);
+
             }
         });
 
@@ -136,39 +235,11 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                 gMap.addMarker(new MarkerOptions().position(coord));
                 gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coord, 15));
 
-                Geocoder geocoder;
-                List<Address> addresses;
-                geocoder = new Geocoder(getActivity(), Locale.getDefault());
-                String address = "";
-
-                try {
-                    addresses = geocoder.getFromLocation(lat, lng, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-                    address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                String a = address;
-
-                // CODE TO INSERT A NEW TRAINING
-                // Create a Map to store the data we want to set
-                Map<String, Object> docData = new HashMap<>();
-                docData.put("date", "21/10/2021");
-                docData.put("distance", "15km");
-                docData.put("duration", "1h25");
-                docData.put("address_start", a);
-                docData.put("address_end", a);
-                docData.put("path", Arrays.asList("48.85/2.268","48.85/2.268","48.85/2.268","48.85/2.268","48.85/2.268","48.85/2.268","48.85/2.268","48.85/2.268","48.85/2.268"));
-                docData.put("rythm",Arrays.asList(5,6,7.30,8,4,5,5,5,5,5.3,5.2));
-
-                // generate the document id based on the user id and the current timestamp
-                Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-                String ts = User.uid + "_" + String.valueOf(timestamp.getTime());
-
-                // Add a new document (asynchronously) in collection "cities"
-                db.collection("trainings")
-                        .document(ts)
-                        .set(docData);
+                // add new location to path
+                String newCoord = lat + "/" + lng;
+                ArrayList<String> path = training.getPath();
+                path.add(newCoord);
+                training.setPath(path);
 
             }
         };

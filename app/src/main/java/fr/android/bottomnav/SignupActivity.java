@@ -20,6 +20,7 @@ public class SignupActivity extends AppCompatActivity {
 
     EditText email, password, firstName, lastName, age, country, height, weight;
     private FirebaseAuth mAuth;
+    private DBHandler dbHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,8 @@ public class SignupActivity extends AppCompatActivity {
         country = (EditText) findViewById(R.id.editTextSignupCountry);
         height = (EditText) findViewById(R.id.editTextSignupHeight);
         weight = (EditText) findViewById(R.id.editTextSignupWeight);
+
+        dbHandler = new DBHandler(this);
     }
 
     /*public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -62,7 +65,6 @@ public class SignupActivity extends AppCompatActivity {
         Intent intent = new Intent(this, LoginActivity.class);
 
         // register personal data in the sqlite local database
-        DBHandler dbHandler = new DBHandler(this);
         dbHandler.addNewUser(firstName.getText().toString(), lastName.getText().toString(),
                 email.getText().toString(), Integer.parseInt(age.getText().toString()),
                 country.getText().toString(), Double.parseDouble(height.getText().toString()),
