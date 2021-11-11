@@ -8,8 +8,10 @@ import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
 import android.provider.MediaStore;
@@ -31,6 +33,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.File;
+import java.util.ArrayList;
 
 import fr.android.bottomnav.R;
 
@@ -59,54 +64,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         gMap = googleMap;
-        //LatLng sydney = new LatLng(-34, 151);
-        //gMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        //gMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-
-        /*
-        @SuppressLint("MissingPermission") Location pos = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        int lat = (int) (pos.getLatitude());
-        int lng = (int) (pos.getLongitude());
-        LatLng coord = new LatLng(lat, lng);
-        gMap.addMarker(new MarkerOptions().position(coord));
-        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coord, 15));
-
-
-         */
     }
-
-
-
-
-
-/*
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if (ActivityCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(getActivity(),
-                        Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-
-
-            // if GPS is not enabled, ask the use to enable it
-            if (!locationManager.isProviderEnabled(provider)) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivityForResult(intent, GPS_REQUEST_CODE);
-            }
-
-            requestLocationUpdates();
-
-        } else
-            // ask for permissions; this is asynchronous
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_LOC);
-
-    }
-  */
-
-
 
     @Nullable
     @Override
@@ -134,16 +92,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         imgBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                takePhoto(v);
+                takePhoto();
             }
         });
-
-
-
-        // locate your position
-        // Get the location manager
-    //    locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-      //  provider = LocationManager.GPS_PROVIDER;
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
@@ -171,76 +122,20 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                 gMap.addMarker(new MarkerOptions().position(coord));
                 gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coord, 15));
 
-                //latitude.setText(String.valueOf(location.getLatitude()));
-                //longitude.setText(String.valueOf(location.getLongitude()));
             }
         };
 
         requestLocationUpdates();
-        /*
-        // check permissions before registering
-        if (getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
-            requestLocationUpdates();
-        else {
-            String[] perms = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
-            // 1- ask for permissions at runtime
-            // 2 - enable GPS if needed
-            // 3- request location updates
-            ActivityCompat.requestPermissions(getActivity(), perms, PERM_REQUEST);
-        }
-
-         */
-
     }
 
     @SuppressLint("MissingPermission")
     private void requestLocationUpdates() {
-       /*
-        fusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        // Got last known location. In some rare situations this can be null.
-
-                        if (location != null) {
-                            Log.d("FUSED", "Latest location found");
-                            // Logic to handle location object
-                            //latitude.setText(String.valueOf(location.getLatitude()));
-                            //longitude.setText(String.valueOf(location.getLongitude()));
-                        } else
-                            Log.d("FUSED", "Last Location unsuccessful");
-                    }
-                });
-*/
-
 
         if (fusedLocationClient != null)
           fusedLocationClient.requestLocationUpdates(locationRequest,
                 locationCallback, Looper.getMainLooper());
 
-
-
     }
-
-    /*
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        // check permissions before registering
-        if (getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
-            requestLocationUpdates();
-        else {
-            String[] perms = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
-            // 1- ask for permissions at runtime
-            // 2 - enable GPS if needed
-            // 3- request location updates
-            ActivityCompat.requestPermissions(getActivity(), perms, PERM_REQUEST);
-        }
-    }
-    */
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -256,13 +151,13 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             }
         }
 
-        if(requestCode == CAMERA_PERM_CODE){
+        /*if(requestCode == CAMERA_PERM_CODE){
             if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                takePhoto(getView());
+                takePhoto();
             }else{
                 Toast.makeText(getActivity(), "Camera permission required to use camera", Toast.LENGTH_LONG).show();
             }
-        }
+        }*/
 
     }
 
@@ -294,20 +189,37 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     }
     */
 
-    /*
-    *
-    *   PHOTO
-    *
-     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        //Store picture in picture field :
+        Bitmap image = (Bitmap) data.getExtras().get("data");
+        //Put picture on the imageView item :
+        String filename = "bpetiot@gmail.com_16234567898765432345";
+        picGallerySaver(image,filename,"test");
+        //ArrayList<String> finalPaths = new ArrayList<String>();
+        //finalPaths is an arraylist filled with the path of picture with a specific name (name of the run you want to display) :
+        //finalPaths = getPathfromName(filename);
 
+        /*//Display the picture :
+        for(int i=0; i<finalPaths.size(); i++){
+            File file = new File(finalPaths.get(i));
+            imageView.get(i).setImageURI(Uri.fromFile(file));
+        }*/
+    }
 
+    //This method stock the picture into device gallery. The method also stock the picture's path and name in the "Path" arraylist :
+    public Uri picGallerySaver(Bitmap pic, String name, String description){
+        //Stock in gallery :
+        String savedImageURL = MediaStore.Images.Media.insertImage(getActivity().getContentResolver(),pic,name,description);
+        //Parse the gallery image url to uri :
+        Uri savedImageURI = Uri.parse(savedImageURL);
+        //Store URI's path and name in an arraylist :
+        //Path.add(getPathFile(savedImageURI));
+        //Path.add(name);
+        return savedImageURI;
+    }
 
-
-
-
-    public void takePhoto(View view){
-        //Check permission
-
+    public void takePhoto(){
         //Camera
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         try{
