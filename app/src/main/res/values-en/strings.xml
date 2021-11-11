@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Vastra</string>
+    <string name="title_accueil">Home</string>
+    <string name="title_enregistrer">Record</string>
+    <string name="title_entrainements">Trainings</string>
+    <string name="title_localiser">Locate</string>
+    <string name="title_profile">Profile</string>
+    <string name="pres">The application n°1 for runners and cyclists</string>
+    <string name="facebook">Continue with Facebook</string>
+    <string name="google">Continue with Google</string>
+    <string name="email">Sign up with email</string>
+    <string name="text_email">Email</string>
+    <string name="member">Already a member ?</string>
+    <string name="signup_title">Sign up</string>
+    <string name="connect">Log in</string>
+    <string name="pass_length">Passwords must contain at least 6 characters</string>
+    <string name="agreement_terms_of_use">By registering, you agree to our Terms of Use</string>
+    <string name="agreement_confidentiality_policy">See our Privacy Policy.</string>
+    <string name="signup_email">E-mail</string>
+    <string name="signup_pass">Password</string>
+    <string name="signup">Accept and signup</string>
+    <string name="firstName">First Name</string>
+    <string name="lastName">Last Name</string>
+    <string name="country">Country</string>
+    <string name="age">Age</string>
+    <string name="height">Height</string>
+    <string name="weight">Weight</string>
+    <string name="runnerCode">Runner\'s code</string>
+    <string name="editUser">Edit user</string>
+    <string name="locate">LOCATE</string>
+</resources>

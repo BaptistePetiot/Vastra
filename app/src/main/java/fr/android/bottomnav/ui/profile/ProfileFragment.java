@@ -104,7 +104,7 @@ public class ProfileFragment extends Fragment {
         dbHandler.updateTable(User.email, firstName, lastName, age, country, height, weight);
         // upadte user info
         dbHandler.getUser(User.email);
-        Toast.makeText(getActivity(), "Datas have been saved", Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), "Data have been saved", Toast.LENGTH_LONG).show();
 
         displayUser();
     }
