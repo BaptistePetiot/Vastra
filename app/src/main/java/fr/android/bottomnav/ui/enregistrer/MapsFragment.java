@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
@@ -24,7 +23,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -37,22 +35,22 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import fr.android.bottomnav.DBHandler;
 import fr.android.bottomnav.R;
 import fr.android.bottomnav.User;
 import fr.android.bottomnav.ui.Training;
@@ -70,6 +68,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private ImageButton imgBtn;
     private Button button_start, button_stop;
     private FirebaseFirestore db;
+    private DBHandler dbHandler;
 
     private Training training;
     private Geocoder geocoder;
@@ -118,6 +117,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         // create new training
         training = new Training();
 
+        // Data Base Handler
+        dbHandler = new DBHandler(getActivity());
+
         // PHOTO
         imgBtn = (ImageButton) view.findViewById(R.id.imageButtonPhoto);
         imgBtn.setOnClickListener(new View.OnClickListener(){
@@ -143,7 +145,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         });
 
         // STOP
-        button_stop = (Button) view.findViewById(R.id.button_stop);
+        button_stop = (Button) view.findViewById(R.id.buttonLocate);
         button_stop.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -236,18 +238,35 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                 double lat =  location.getLatitude();
                 double lng = location.getLongitude();
                 LatLng coord = new LatLng(lat, lng);
+                gMap.clear();
                 gMap.addMarker(new MarkerOptions().position(coord));
                 gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coord, 15));
 
-                // add new location to path
+                String newCoord = lat + "/" + lng;
+                // add new location to path and draw route
                 if(training.isStarted() && !training.isFinished()){
-                    String newCoord = lat + "/" + lng;
                     ArrayList<String> path = training.getPath();
                     path.add(newCoord);
                     training.setPath(path);
                 }
 
+                //draw route
+                PolylineOptions polyOpt = new PolylineOptions();
+                for(String point : training.getPath()){
+                    double latitude = Double.parseDouble(point.split("/")[0]);
+                    double longitude = Double.parseDouble(point.split("/")[1]);
+                    polyOpt.add(new LatLng(latitude, longitude));
+                }
+                Polyline polyline = gMap.addPolyline(polyOpt);
 
+                // Constantly update location in firebase
+                dbHandler.getUser(User.email);
+
+                Map<String, Object> docData = new HashMap<>();
+                docData.put("code", User.code);
+                docData.put("location", newCoord);
+
+                db.collection("locations").document(User.uid).set(docData);
             }
         };
 
@@ -294,15 +313,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         //Put picture on the imageView item :
         String filename = "image";
         picGallerySaver(image,filename,"test");
-        //ArrayList<String> finalPaths = new ArrayList<String>();
-        //finalPaths is an arraylist filled with the path of picture with a specific name (name of the run you want to display) :
-        //finalPaths = getPathfromName(filename);
-
-        /*//Display the picture :
-        for(int i=0; i<finalPaths.size(); i++){
-            File file = new File(finalPaths.get(i));
-            imageView.get(i).setImageURI(Uri.fromFile(file));
-        }*/
     }
 
     //This method stock the picture into device gallery. The method also stock the picture's path and name in the "Path" arraylist :
@@ -316,9 +326,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         imgs.add(getPathFile(savedImageURI));
         training.setImages(imgs);
 
-        //Store URI's path and name in an arraylist :
-        //Path.add(getPathFile(savedImageURI));
-        //Path.add(name);
         return savedImageURI;
     }
 

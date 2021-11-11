@@ -26,6 +26,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.File;
 import java.math.BigInteger;
+import java.security.spec.ECField;
 import java.util.ArrayList;
 
 import fr.android.bottomnav.User;
@@ -87,12 +88,17 @@ public class AccueilFragment extends Fragment {
                                 }
                             }
 
-                            // get the most recent training of the user
-                            Training training = trainings.get(trainings.size()-1);
-                            // get the path of the last picture taken
-                            String uri = training.getImages().get(training.getImages().size()-1);
-                            File file = new File(uri);
-                            ivAccueil.setImageURI(Uri.fromFile(file));
+                            try{
+                                // get the most recent training of the user
+                                Training training = trainings.get(trainings.size()-1);
+                                // get the path of the last picture taken
+                                String uri = training.getImages().get(training.getImages().size()-1);
+                                File file = new File(uri);
+                                ivAccueil.setImageURI(Uri.fromFile(file));
+                            }catch(Exception e){
+                                Log.d("img", "No image taken yet");
+                            }
+
 
                         } else {
                             Log.w("TAG", "Error getting documents.", task.getException());

@@ -33,7 +33,7 @@
             android:text="START" />
 
         <Button
-            android:id="@+id/button_stop"
+            android:id="@+id/buttonLocate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
