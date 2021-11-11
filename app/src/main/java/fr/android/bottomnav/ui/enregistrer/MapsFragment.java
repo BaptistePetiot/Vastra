@@ -9,6 +9,8 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -33,11 +35,20 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.File;
+import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import fr.android.bottomnav.R;
+import fr.android.bottomnav.User;
 
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
@@ -50,6 +61,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private final int GPS_REQUEST_CODE = 1;
     private GoogleMap gMap;
     private ImageButton imgBtn;
+    private FirebaseFirestore db;
 
     int PERM_REQUEST = 1;
     private final int CAMERA_PERM_CODE = 101;
@@ -71,6 +83,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        // Firebase
+        db = FirebaseFirestore.getInstance();
 
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }
@@ -121,6 +135,40 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                 LatLng coord = new LatLng(lat, lng);
                 gMap.addMarker(new MarkerOptions().position(coord));
                 gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coord, 15));
+
+                Geocoder geocoder;
+                List<Address> addresses;
+                geocoder = new Geocoder(getActivity(), Locale.getDefault());
+                String address = "";
+
+                try {
+                    addresses = geocoder.getFromLocation(lat, lng, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                    address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                String a = address;
+
+                // CODE TO INSERT A NEW TRAINING
+                // Create a Map to store the data we want to set
+                Map<String, Object> docData = new HashMap<>();
+                docData.put("date", "21/10/2021");
+                docData.put("distance", "15km");
+                docData.put("duration", "1h25");
+                docData.put("address_start", a);
+                docData.put("address_end", a);
+                docData.put("path", Arrays.asList("48.85/2.268","48.85/2.268","48.85/2.268","48.85/2.268","48.85/2.268","48.85/2.268","48.85/2.268","48.85/2.268","48.85/2.268"));
+                docData.put("rythm",Arrays.asList(5,6,7.30,8,4,5,5,5,5,5.3,5.2));
+
+                // generate the document id based on the user id and the current timestamp
+                Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+                String ts = User.uid + "_" + String.valueOf(timestamp.getTime());
+
+                // Add a new document (asynchronously) in collection "cities"
+                db.collection("trainings")
+                        .document(ts)
+                        .set(docData);
 
             }
         };

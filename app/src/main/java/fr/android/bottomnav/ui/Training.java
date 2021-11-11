@@ -6,21 +6,17 @@ public class Training {
     private String date;
     private String distance;
     private String duration;
-    private String lat_start;
-    private String lng_start;
-    private String lat_end;
-    private String lng_eng;
+    private String address_start;
+    private String address_end;
     private ArrayList<String> path;
     private ArrayList<String> rythm;
 
-    public Training(String date, String distance, String duration, String lat_start, String lng_start, String lat_end, String lng_end, ArrayList<String> path, ArrayList<String> rythm){
+    public Training(String date, String distance, String duration, String address_start, String address_end, ArrayList<String> path, ArrayList<String> rythm){
         this.date = date;
         this.distance = distance;
         this.duration = duration;
-        this.lat_start = lat_start;
-        this.lng_start = lng_start;
-        this.lat_end = lat_end;
-        this.lng_eng = lng_end;
+        this.address_start = address_start;
+        this.address_end = address_end;
         this.path = path;
         this.rythm = rythm;
     }
@@ -45,19 +41,11 @@ public class Training {
         return rythm;
     }
 
-    public String getLat_end() {
-        return lat_end;
+    public String getAddress_start() {
+        return address_start;
     }
 
-    public String getLat_start() {
-        return lat_start;
-    }
-
-    public String getLng_eng() {
-        return lng_eng;
-    }
-
-    public String getLng_start() {
-        return lng_start;
+    public String getAddress_end() {
+        return address_end;
     }
 }

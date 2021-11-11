@@ -58,13 +58,6 @@ public class EntrainementsFragment extends Fragment {
         // Firebase
         db = FirebaseFirestore.getInstance();
 
-        /*final TextView textView = binding.textEntrainements;
-        entrainementsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });*/
         return root;
     }
 
@@ -91,10 +84,8 @@ public class EntrainementsFragment extends Fragment {
                                     trainings.add(new Training(String.valueOf(document.getData().get("date")),
                                             String.valueOf(document.getData().get("distance")),
                                             String.valueOf(document.getData().get("duration")),
-                                            String.valueOf(document.getData().get("lat_start")),
-                                            String.valueOf(document.getData().get("lng_start")),
-                                            String.valueOf(document.getData().get("lat_end")),
-                                            String.valueOf(document.getData().get("lng_end")),
+                                            String.valueOf(document.getData().get("address_start")),
+                                            String.valueOf(document.getData().get("address_end")),
                                             p,
                                             r
                                             ));
@@ -109,29 +100,6 @@ public class EntrainementsFragment extends Fragment {
                         }
                     }
                 });
-
-        /*// CODE TO INSERT A NEW TRAINING
-        // Create a Map to store the data we want to set
-        Map<String, Object> docData = new HashMap<>();
-        docData.put("date", "21/10/2021");
-        docData.put("distance", "15km");
-        docData.put("duration", "1h25");
-        docData.put("lat_start", "48.85");
-        docData.put("lng_start", "2.28");
-        docData.put("lat_end", "48.85");
-        docData.put("lng_end", "2.28");
-        docData.put("path", Arrays.asList("48.85/2.268","48.85/2.268","48.85/2.268","48.85/2.268","48.85/2.268","48.85/2.268","48.85/2.268","48.85/2.268","48.85/2.268"));
-        docData.put("rythm",Arrays.asList(5,6,7.30,8,4,5,5,5,5,5.3,5.2));
-
-        // generate the document id based on the user id and the current timestamp
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        String ts = User.uid + "_" + String.valueOf(timestamp.getTime());
-
-        // Add a new document (asynchronously) in collection "cities"
-        db.collection("trainings")
-                .document(ts)
-                .set(docData);*/
-
     }
 
     @Override
