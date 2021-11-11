@@ -50,8 +50,6 @@ public class LoginActivity extends AppCompatActivity {
     public void loginApp(View view) {
         Intent intent = new Intent(this, MainActivity.class);
 
-        //
-
         mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -70,6 +68,9 @@ public class LoginActivity extends AppCompatActivity {
                                     User.uid = uid;
                                 }
                             }
+
+                            //store email in User
+                            User.email = email.getText().toString();
 
                             startActivity(intent);
                         } else {

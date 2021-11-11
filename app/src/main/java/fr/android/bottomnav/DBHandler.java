@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -58,7 +59,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-//This method is use to retrieve user informations from our sqlite database :
+/*//This method is use to retrieve user informations from our sqlite database :
     public void getUser(String mail){
         //ArrayList<User> userData = new ArrayList<User>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -85,6 +86,50 @@ public class DBHandler extends SQLiteOpenHelper {
     //Clear memory :
         cursorUser.close();
         //return userData;
+    }*/
+
+    public void getUser(String mail){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        //Declaring sql request :
+        Cursor cursorUser = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE mail = '"+mail+"'", null);
+
+        Log.d("getUser", "test");
+
+        //going through the dataset :
+        if (cursorUser.moveToFirst()) {
+            do {
+                Log.d("getUser", User.firstName + " " + User.lastName + " " + User.email + " " + User.age + " " + User.country + " " + User.height + " " + User.weight);
+
+                //Save data :
+                User.firstName = cursorUser.getString(0);
+                User.lastName = cursorUser.getString(1);
+                User.email = cursorUser.getString(2);
+                User.age = cursorUser.getInt(3);
+                User.country = cursorUser.getString(4);
+                User.height = cursorUser.getDouble(5);
+                User.weight = cursorUser.getDouble(6);
+
+                Log.d("getUser", User.firstName + " " + User.lastName + " " + User.email + " " + User.age + " " + User.country + " " + User.height + " " + User.weight);
+            } while (cursorUser.moveToNext());
+        }
+
+        //Clear memory :
+        cursorUser.close();
+    }
+
+    public void updateTable(String email, String firstName, String lastName, int age, String country, double height, double weight){
+        //Querie to run :
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("UPDATE "+ TABLE_NAME +" SET " +
+                "firstname = '"+firstName+"', " +
+                "lastname = '"+lastName+"', " +
+                "age = "+age+", " +
+                "country = '"+country+"', " +
+                "size = "+height+", " +
+                "weight = "+weight+"" +
+                " WHERE mail = '" +email+"'"
+        );
     }
 
     @Override
