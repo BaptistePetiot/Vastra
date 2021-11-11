@@ -4,8 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -19,10 +22,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Locale;
+
 public class FirstActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private ImageSwitcher imageSwitcher;
+    private boolean languageLoaded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,45 +41,11 @@ public class FirstActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-       /* imageSwitcher = (ImageSwitcher) findViewById(R.id.image_switcher);
+        if(!languageLoaded){
+            chooseLanguage();
+            languageLoaded = true;
+        }
 
-        // Animation when switching to another image.
-        Animation out= AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
-        Animation in= AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
-
-        // Set animation when switching images.
-        imageSwitcher.setInAnimation(in);
-        imageSwitcher.setOutAnimation(out);*/
-
-
-        /*imageSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
-
-            // Returns the view to show Image
-            // (Usually should use ImageView)
-            @Override
-            public View makeView() {
-                ImageView imageView = new ImageView(getApplicationContext());
-
-                imageView.setBackgroundColor(Color.LTGRAY);
-                imageView.setScaleType(ImageView.ScaleType.CENTER);
-
-                ImageSwitcher.LayoutParams params= new ImageSwitcher.LayoutParams(
-                        ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT);
-                imageView.setLayoutParams(params);
-                return imageView;
-            }
-        });*/
-
-        /*imageSwitcher.postDelayed(new Runnable() {
-            int i = 0;
-            public void run() {
-                imageSwitcher.setImageResource(
-                        i++ % 2 == 0 ?
-                                R.drawable.coureur :
-                                R.drawable.cycliste);
-                imageSwitcher.postDelayed(this, 1000);
-            }
-        }, 1000);*/
     }
 
     @Override
@@ -99,6 +71,19 @@ public class FirstActivity extends AppCompatActivity {
     public void login(View view) {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
+    }
+
+    //This method allow us to choose a language from the default device language :
+    public void chooseLanguage(){
+        //Get default language :
+        Locale myLocale = new Locale(Resources.getSystem().getConfiguration().locale.getLanguage());
+        //Define the right res file to use for the application which is strings.xml or strings.xml(en) :
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = myLocale;
+        res.updateConfiguration(conf, dm);
+        startActivity(getIntent());
     }
 
 }
