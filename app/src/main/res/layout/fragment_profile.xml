@@ -165,7 +165,7 @@
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/runnerCode"
+        android:id="@+id/tvRunnerCode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

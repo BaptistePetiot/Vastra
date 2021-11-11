@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextClock;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,7 +31,7 @@ public class ProfileFragment extends Fragment {
 
     private ProfileViewModel profileViewModel;
     private FragmentProfileBinding binding;
-    private TextView runnerCode, tvEmail;
+    private TextView tvRunnerCode, tvEmail;
     private EditText editTextFirstName, editTextLastName, editTextAge, editTextCountry, editTextHeight, editTextWeight;
     private DBHandler dbHandler;
     private Button editUserBtn;
@@ -50,21 +51,7 @@ public class ProfileFragment extends Fragment {
         editTextCountry = binding.editTextCountry;
         editTextHeight = binding.editTextHeight;
         editTextWeight = binding.editTextWeight;
-        runnerCode = binding.runnerCode;
-
-        // generate runner code
-        int leftLimit = 48; // numeral '0'
-        int rightLimit = 122; // letter 'z'
-        int targetStringLength = 15;
-        Random random = new Random();
-
-        String generatedString = random.ints(leftLimit, rightLimit + 1)
-                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
-                .limit(targetStringLength)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
-
-        runnerCode.setText(generatedString);
+        tvRunnerCode = binding.tvRunnerCode;
 
         // retrieve user info in the sqlite database
         dbHandler = new DBHandler(getContext());
@@ -87,8 +74,6 @@ public class ProfileFragment extends Fragment {
     }
 
     public void displayUser(){
-        Log.d("getUser", User.firstName + " " + User.lastName + " " + User.email + " " + User.age + " " + User.country + " " + User.height + " " + User.weight);
-
         editTextFirstName.setText(User.firstName);
         editTextLastName.setText(User.lastName);
         tvEmail.setText(User.email);
@@ -96,6 +81,7 @@ public class ProfileFragment extends Fragment {
         editTextCountry.setText(User.country);
         editTextHeight.setText(Double.toString(User.height));
         editTextWeight.setText(Double.toString(User.weight));
+        tvRunnerCode.setText(User.code);
     }
 
     @Override
@@ -118,6 +104,7 @@ public class ProfileFragment extends Fragment {
         dbHandler.updateTable(User.email, firstName, lastName, age, country, height, weight);
         // upadte user info
         dbHandler.getUser(User.email);
+        Toast.makeText(getActivity(), "Datas have been saved", Toast.LENGTH_LONG).show();
 
         displayUser();
     }

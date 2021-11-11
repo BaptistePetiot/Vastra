@@ -20,6 +20,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String COLUMN_NAME_COUNTRY = "country";
     public static final String COLUMN_NAME_SIZE = "size";
     public static final String COLUMN_NAME_WEIGHT = "weight";
+    public static final String COLUMN_NAME_CODE = "code";
 
     public DBHandler(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -34,12 +35,13 @@ public class DBHandler extends SQLiteOpenHelper {
                 + COLUMN_NAME_AGE + " INTEGER,"
                 + COLUMN_NAME_COUNTRY + " TEXT,"
                 + COLUMN_NAME_SIZE + " REAL,"
-                + COLUMN_NAME_WEIGHT + " REAL)";
+                + COLUMN_NAME_WEIGHT + " REAL,"
+                + COLUMN_NAME_CODE + " TEXT)";
         db.execSQL(query);
     }
 
 //This method is use to add new User to our sqlite database.
-    public void addNewUser(String first, String last, String mail, int age, String country, double height, double weight) {
+    public void addNewUser(String first, String last, String mail, int age, String country, double height, double weight, String code) {
 
     //On below line we are creating a variable for our database to write in it.
         SQLiteDatabase db = this.getWritableDatabase();
@@ -53,6 +55,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_NAME_COUNTRY, country);
         values.put(COLUMN_NAME_SIZE, height);
         values.put(COLUMN_NAME_WEIGHT, weight);
+        values.put(COLUMN_NAME_CODE, code);
 
     //After adding all values we are passing content values to our table.
         db.insert(TABLE_NAME, null, values);
@@ -94,13 +97,9 @@ public class DBHandler extends SQLiteOpenHelper {
         //Declaring sql request :
         Cursor cursorUser = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE mail = '"+mail+"'", null);
 
-        Log.d("getUser", "test");
-
         //going through the dataset :
         if (cursorUser.moveToFirst()) {
             do {
-                Log.d("getUser", User.firstName + " " + User.lastName + " " + User.email + " " + User.age + " " + User.country + " " + User.height + " " + User.weight);
-
                 //Save data :
                 User.firstName = cursorUser.getString(0);
                 User.lastName = cursorUser.getString(1);
@@ -109,8 +108,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 User.country = cursorUser.getString(4);
                 User.height = cursorUser.getDouble(5);
                 User.weight = cursorUser.getDouble(6);
-
-                Log.d("getUser", User.firstName + " " + User.lastName + " " + User.email + " " + User.age + " " + User.country + " " + User.height + " " + User.weight);
+                User.code = cursorUser.getString(7);
             } while (cursorUser.moveToNext());
         }
 

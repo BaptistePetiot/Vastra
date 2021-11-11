@@ -15,12 +15,20 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 public class SignupActivity extends AppCompatActivity {
 
     EditText email, password, firstName, lastName, age, country, height, weight;
     private FirebaseAuth mAuth;
     private DBHandler dbHandler;
+    private String generatedString;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +51,22 @@ public class SignupActivity extends AppCompatActivity {
         height = (EditText) findViewById(R.id.editTextSignupHeight);
         weight = (EditText) findViewById(R.id.editTextSignupWeight);
 
+        // generate runner code
+        int leftLimit = 48; // numeral '0'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 15;
+        Random random = new Random();
+
+        generatedString = random.ints(leftLimit, rightLimit + 1)
+                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+
         dbHandler = new DBHandler(this);
+
+        // Firebase
+        db = FirebaseFirestore.getInstance();
     }
 
     /*public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -68,7 +91,7 @@ public class SignupActivity extends AppCompatActivity {
         dbHandler.addNewUser(firstName.getText().toString(), lastName.getText().toString(),
                 email.getText().toString(), Integer.parseInt(age.getText().toString()),
                 country.getText().toString(), Double.parseDouble(height.getText().toString()),
-                Double.parseDouble(weight.getText().toString()));
+                Double.parseDouble(weight.getText().toString()), generatedString);
 
         // register important data in the remote database
         mAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
@@ -88,6 +111,16 @@ public class SignupActivity extends AppCompatActivity {
 
                     }
                 });
+
+        // register the code to firebase
+        Map<String, Object> docData = new HashMap<>();
+        docData.put("code", generatedString);
+        docData.put("location", "");
+
+        String id = email.getText().toString();
+
+        // Add a new document (asynchronously) in collection "cities"
+        db.collection("locations").document(id).set(docData);
     }
 
 }

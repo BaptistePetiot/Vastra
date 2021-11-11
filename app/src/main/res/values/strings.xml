@@ -27,4 +27,5 @@
     <string name="weight">Poids</string>
     <string name="runnerCode">Code du coureur</string>
     <string name="editUser">Editer utilisateur</string>
+    <string name="locate">LOCALISER</string>
 </resources>

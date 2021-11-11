@@ -208,9 +208,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                 String ts = User.uid + "_" + String.valueOf(timestamp.getTime());
 
                 // Add a new document (asynchronously) in collection "cities"
-                db.collection("trainings")
-                        .document(ts)
-                        .set(docData);
+                db.collection("trainings").document(ts).set(docData);
 
             }
         });

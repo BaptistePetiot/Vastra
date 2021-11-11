@@ -10,6 +10,7 @@ public class User {
     public static String country;
     public static double height;
     public static double weight;
+    public static String code;
 
 }
 
