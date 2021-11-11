@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
@@ -200,6 +201,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                 docData.put("address_start", training.getAddress_start());
                 docData.put("address_end", training.getAddress_end());
                 docData.put("path", training.getPath());
+                docData.put("images", training.getImages());
 
                 // generate the document id based on the user id and the timestamp at start
                 Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -287,40 +289,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    /*
-    @Override
-    public void onPause() {
-        super.onPause();
-
-    if (fusedLocationClient != null)
-        fusedLocationClient.removeLocationUpdates(locationCallback);
-    }
-
-     */
-
-
-    /*
-    @Override
-    public void onLocationChanged(Location location) {
-        int lat = (int) (location.getLatitude());
-        int lng = (int) (location.getLongitude());
-        LatLng coord = new LatLng(lat, lng);
-
-        Log.d("LOCALISATION", "test");
-
-
-        // add a marker on the map && zoom in
-        gMap.addMarker(new MarkerOptions().position(coord));
-        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coord, 15));
-    }
-    */
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         //Store picture in picture field :
         Bitmap image = (Bitmap) data.getExtras().get("data");
         //Put picture on the imageView item :
-        String filename = "bpetiot@gmail.com_16234567898765432345";
+        String filename = "image";
         picGallerySaver(image,filename,"test");
         //ArrayList<String> finalPaths = new ArrayList<String>();
         //finalPaths is an arraylist filled with the path of picture with a specific name (name of the run you want to display) :
@@ -339,10 +313,25 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         String savedImageURL = MediaStore.Images.Media.insertImage(getActivity().getContentResolver(),pic,name,description);
         //Parse the gallery image url to uri :
         Uri savedImageURI = Uri.parse(savedImageURL);
+
+        ArrayList<String> imgs = training.getImages();
+        imgs.add(getPathFile(savedImageURI));
+        training.setImages(imgs);
+
         //Store URI's path and name in an arraylist :
         //Path.add(getPathFile(savedImageURI));
         //Path.add(name);
         return savedImageURI;
+    }
+
+    //This method allow us to get the file's path from the URI (this method is useful for picGallerySaver) :
+    public String getPathFile(Uri uri) {
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getActivity().managedQuery(uri, projection, null, null, null);
+        getActivity().startManagingCursor(cursor);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
     }
 
     public void takePhoto(){

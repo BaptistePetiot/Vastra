@@ -79,20 +79,22 @@ public class EntrainementsFragment extends Fragment {
                                     // list des trainings récupérés
                                     // ajouter tous les trainings à la liste trainings
                                     ArrayList<String> p = (ArrayList<String>) document.getData().get("path");
+                                    ArrayList<String> i = (ArrayList<String>) document.getData().get("images");
 
                                     trainings.add(new Training(String.valueOf(document.getData().get("dateAndHour")),
                                             String.valueOf(document.getData().get("distance")),
                                             String.valueOf(document.getData().get("duration")),
                                             String.valueOf(document.getData().get("address_start")),
                                             String.valueOf(document.getData().get("address_end")),
-                                            p
+                                            p,
+                                            i
                                             ));
                                 }
                             }
 
                             // instantiate the EntrainementsAdapter with the context and the data to display
-                            ea = new EntrainementsAdapter(trainings);
-                            Log.d("DEBUG", String.valueOf(trainings.size()));
+                            /*ea = new EntrainementsAdapter(trainings);
+                            Log.d("DEBUG", String.valueOf(trainings.size()));*/
                         } else {
                             Log.w("TAG", "Error getting documents.", task.getException());
                         }

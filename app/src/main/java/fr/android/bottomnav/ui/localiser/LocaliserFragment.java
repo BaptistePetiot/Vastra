@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import fr.android.bottomnav.databinding.FragmentLocaliserBinding;
 
+
 public class LocaliserFragment extends Fragment {
 
     private LocaliserViewModel localiserViewModel;
@@ -31,13 +32,7 @@ public class LocaliserFragment extends Fragment {
         binding = FragmentLocaliserBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textLocaliser;
-        localiserViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+
         return root;
     }
 

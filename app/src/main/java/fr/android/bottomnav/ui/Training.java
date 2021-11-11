@@ -9,6 +9,7 @@ public class Training {
     private String address_start;
     private String address_end;
     private ArrayList<String> path;
+    private ArrayList<String> images;
 
     private boolean started;
     private boolean finished;
@@ -20,17 +21,19 @@ public class Training {
         this.address_start = "";
         this.address_end = "";
         this.path = new ArrayList<>();
+        this.images = new ArrayList<>();
         this.started = false;
         this.finished = false;
     }
 
-    public Training(String dateAndHour, String distance, String duration, String address_start, String address_end, ArrayList<String> path){
+    public Training(String dateAndHour, String distance, String duration, String address_start, String address_end, ArrayList<String> path, ArrayList<String> images){
         this.dateAndHour = dateAndHour;
         this.distance = distance;
         this.duration = duration;
         this.address_start = address_start;
         this.address_end = address_end;
         this.path = path;
+        this.images = images;
         this.started = false;
         this.finished = false;
     }
@@ -97,5 +100,13 @@ public class Training {
 
     public void setFinished(boolean finished) {
         this.finished = finished;
+    }
+
+    public ArrayList<String> getImages() {
+        return images;
+    }
+
+    public void setImages(ArrayList<String> images) {
+        this.images = images;
     }
 }
