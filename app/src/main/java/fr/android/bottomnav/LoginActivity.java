@@ -43,12 +43,14 @@ public class LoginActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
-        user = mAuth.getCurrentUser();
+        //user = mAuth.getCurrentUser();
     }
 
     /** Called when the user taps the login button */
     public void loginApp(View view) {
         Intent intent = new Intent(this, MainActivity.class);
+
+        //
 
         mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {

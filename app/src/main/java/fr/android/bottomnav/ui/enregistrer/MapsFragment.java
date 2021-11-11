@@ -2,26 +2,22 @@ package fr.android.bottomnav.ui.enregistrer;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -35,7 +31,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import fr.android.bottomnav.R;
 
@@ -49,8 +44,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private final int PERMISSION_REQUEST_LOC = 0;
     private final int GPS_REQUEST_CODE = 1;
     private GoogleMap gMap;
+    private ImageButton imgBtn;
 
     int PERM_REQUEST = 1;
+    private final int CAMERA_PERM_CODE = 101;
 
     // fused location version; don't forget to add the dependency to your build.gradle file
     // https://developers.google.com/android/guides/setup
@@ -132,6 +129,15 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             mapFragment.getMapAsync(this);
         }
 
+        // PHOTO
+        imgBtn = (ImageButton) view.findViewById(R.id.imageButtonPhoto);
+        imgBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                takePhoto(v);
+            }
+        });
+
 
 
         // locate your position
@@ -185,8 +191,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         }
 
          */
-
-
 
     }
 
@@ -242,13 +246,21 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        askedOnce = true;
+       askedOnce = true;
 
         if (requestCode == PERM_REQUEST) {
             // check grantResults
             if (grantResults.length > 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
                     grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 requestLocationUpdates();
+            }
+        }
+
+        if(requestCode == CAMERA_PERM_CODE){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                takePhoto(getView());
+            }else{
+                Toast.makeText(getActivity(), "Camera permission required to use camera", Toast.LENGTH_LONG).show();
             }
         }
 
@@ -288,20 +300,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     *
      */
 
-    private final int CAMERA_PERM_CODE = 101;
 
 
-    public void onRequestPermissionResult (int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
-        if(requestCode == CAMERA_PERM_CODE){
-            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                takePhoto();
-            }else{
-                Toast.makeText(getActivity(), "Camera permission required to use camera", Toast.LENGTH_LONG).show();
-            }
-        }
-    }
 
-    public void takePhoto(){
+
+
+    public void takePhoto(View view){
         //Check permission
 
         //Camera

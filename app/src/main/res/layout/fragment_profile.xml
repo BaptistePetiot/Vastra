@@ -25,7 +25,8 @@
         android:ems="10"
         android:gravity="center"
         android:inputType="textPersonName"
-        android:minHeight="48dp" />
+        android:minHeight="48dp"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
         android:id="@+id/text_lastName"
@@ -45,7 +46,8 @@
         android:ems="10"
         android:gravity="center"
         android:inputType="textPersonName"
-        android:minHeight="48dp" />
+        android:minHeight="48dp"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
         android:id="@+id/text_email"
@@ -65,7 +67,8 @@
         android:ems="10"
         android:gravity="center"
         android:inputType="textPersonName"
-        android:minHeight="48dp" />
+        android:minHeight="48dp"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
         android:id="@+id/text_age"
@@ -85,7 +88,8 @@
         android:ems="10"
         android:gravity="center"
         android:inputType="number"
-        android:minHeight="48dp" />
+        android:minHeight="48dp"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
         android:id="@+id/text_country"
@@ -105,7 +109,8 @@
         android:ems="10"
         android:gravity="center"
         android:inputType="textPersonName"
-        android:minHeight="48dp" />
+        android:minHeight="48dp"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
         android:id="@+id/text_height"
@@ -125,7 +130,8 @@
         android:ems="10"
         android:gravity="center"
         android:inputType="number"
-        android:minHeight="48dp" />
+        android:minHeight="48dp"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
         android:id="@+id/text_weight"
@@ -145,7 +151,8 @@
         android:ems="10"
         android:gravity="center"
         android:inputType="number"
-        android:minHeight="48dp" />
+        android:minHeight="48dp"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
         android:id="@+id/text_runnerCode"

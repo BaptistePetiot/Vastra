@@ -35,6 +35,13 @@ public class ProfileFragment extends Fragment {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        editTextFirstName = binding.editTextFirstName;
+        editTextLastName = binding.editTextLastName;
+        editTextEmail = binding.editTextEmail;
+        editTextAge = binding.editTextAge;
+        editTextCountry = binding.editTextCountry;
+        editTextHeight = binding.editTextHeight;
+        editTextWeight = binding.editTextWeight;
         runnerCode = binding.runnerCode;
 
         // generate runner code
@@ -72,26 +79,6 @@ public class ProfileFragment extends Fragment {
         editTextCountry.setText(User.country);
         editTextHeight.setText((int) User.height);
         editTextWeight.setText((int) User.weight);
-
-        /*
-        try {
-            editTextFirstName.setText(User.firstName);
-            editTextLastName.setText(User.lastName);
-            editTextEmail.setText(User.email);
-            editTextAge.setText(User.age);
-            editTextCountry.setText(User.country);
-            editTextHeight.setText((int) User.height);
-            editTextWeight.setText((int) User.weight);
-
-        }catch (Exception e){
-            editTextFirstName.setText("");
-            editTextLastName.setText("");
-            editTextEmail.setText("");
-            editTextAge.setText("");
-            editTextCountry.setText("");
-            editTextHeight.setText("");
-            editTextWeight.setText("");
-        }*/
     }
 
     @Override

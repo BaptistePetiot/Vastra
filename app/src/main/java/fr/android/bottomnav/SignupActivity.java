@@ -55,15 +55,18 @@ public class SignupActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-
     }
 
     // register data
     public void register(View view){
         Intent intent = new Intent(this, LoginActivity.class);
+
+        // register personal data in the sqlite local database
+        DBHandler dbHandler = new DBHandler(this);
+        dbHandler.addNewUser(firstName.getText().toString(), lastName.getText().toString(),
+                email.getText().toString(), Integer.parseInt(age.getText().toString()),
+                country.getText().toString(), Double.parseDouble(height.getText().toString()),
+                Double.parseDouble(weight.getText().toString()));
 
         // register important data in the remote database
         mAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
@@ -73,7 +76,6 @@ public class SignupActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("TAG", "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
                             startActivity(intent);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -84,11 +86,6 @@ public class SignupActivity extends AppCompatActivity {
 
                     }
                 });
-
-        // register personal data in the sqlite local database
-        DBHandler dbHandler = new DBHandler(this);
-        dbHandler.addNewUser(firstName.getText().toString(), lastName.getText().toString(), email.getText().toString(), Integer.parseInt(age.getText().toString()), country.getText().toString(), Double.parseDouble(height.getText().toString()), Double.parseDouble(weight.getText().toString()));
-
     }
 
 }

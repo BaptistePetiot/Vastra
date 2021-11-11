@@ -1,6 +1,10 @@
 package fr.android.bottomnav.ui.localiser;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +16,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import fr.android.bottomnav.databinding.FragmentAccueilBinding;
 import fr.android.bottomnav.databinding.FragmentLocaliserBinding;
 
 public class LocaliserFragment extends Fragment {
