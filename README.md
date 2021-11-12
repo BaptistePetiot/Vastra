@@ -1,5 +1,5 @@
 # Vastra
 
 Créateurs:
-GODINEAU Savinien
-PETIOT Baptiste
+
+GODINEAU Savinien & PETIOT Baptiste
