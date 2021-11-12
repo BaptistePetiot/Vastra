@@ -35,9 +35,9 @@ public class EntrainementsAdapter extends RecyclerView.Adapter<EntrainementsAdap
             super(view);
             // Define click listener for the ViewHolder's View
 
-            textView_date = (TextView) view.findViewById(R.id.textView_date);
-            textView_distance = (TextView) view.findViewById(R.id.textView_distance);
-            textView_duration = (TextView) view.findViewById(R.id.textView_duration);
+            textView_date = (TextView) view.findViewById(R.id.textViewDate);
+            textView_distance = (TextView) view.findViewById(R.id.textViewDistance);
+            textView_duration = (TextView) view.findViewById(R.id.textViewDuration);
 
         }
 

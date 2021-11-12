@@ -14,6 +14,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -35,6 +37,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import fr.android.bottomnav.R;
 import fr.android.bottomnav.User;
 import fr.android.bottomnav.databinding.FragmentEntrainementsBinding;
 import fr.android.bottomnav.ui.Training;
@@ -44,8 +47,11 @@ public class EntrainementsFragment extends Fragment {
     private EntrainementsViewModel entrainementsViewModel;
     private FragmentEntrainementsBinding binding;
     private FirebaseFirestore db;
-    private EntrainementsAdapter ea;
     private ArrayList<Training> trainings = new ArrayList<Training>();
+    private ViewGroup container;
+    private LayoutInflater inflater;
+    private EntrainementsAdapter adapter;
+    private RecyclerView recyclerView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -54,6 +60,11 @@ public class EntrainementsFragment extends Fragment {
 
         binding = FragmentEntrainementsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        inflater = inflater;
+        container = container;
+
+        recyclerView = (RecyclerView) binding.rvTrainings;
 
         // Firebase
         db = FirebaseFirestore.getInstance();
@@ -91,10 +102,18 @@ public class EntrainementsFragment extends Fragment {
                                             ));
                                 }
                             }
+                            for(Training training : trainings){
+                                String date = training.getDateAndHour();
+                                String distance = training.getDistance();
+                                String duration = training.getDuration();
+                            }
 
-                            // instantiate the EntrainementsAdapter with the context and the data to display
-                            /*ea = new EntrainementsAdapter(trainings);
-                            Log.d("DEBUG", String.valueOf(trainings.size()));*/
+                            // set up the RecyclerView
+                            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                            adapter = new EntrainementsAdapter(trainings);
+                            //adapter.setClickListener(this);
+                            recyclerView.setAdapter(adapter);
+
                         } else {
                             Log.w("TAG", "Error getting documents.", task.getException());
                         }

@@ -7,21 +7,21 @@
     >
 
     <TextView
-        android:id="@+id/textView_date"
+        android:id="@+id/textViewDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="TextView" />
 
     <TextView
-        android:id="@+id/textView_distance"
+        android:id="@+id/textViewDistance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="TextView" />
 
     <TextView
-        android:id="@+id/textView_duration"
+        android:id="@+id/textViewDuration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
