@@ -13,9 +13,6 @@
         android:layout_height="match_parent">
     </androidx.recyclerview.widget.RecyclerView>
 
-    <!--<include layout="@layout/training_item"/>-->
-
-
 
 </ScrollView>
 

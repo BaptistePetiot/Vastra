@@ -102,11 +102,6 @@ public class EntrainementsFragment extends Fragment {
                                             ));
                                 }
                             }
-                            for(Training training : trainings){
-                                String date = training.getDateAndHour();
-                                String distance = training.getDistance();
-                                String duration = training.getDuration();
-                            }
 
                             // set up the RecyclerView
                             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
